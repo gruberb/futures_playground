@@ -1,11 +1,9 @@
-use futures;
-use reqwest;
 
-use std::mem;
-use std::io::{self, Cursor};
 use futures::{Future, Stream};
+use std::io::{self, Cursor};
 use reqwest::r#async::{Client, Decoder};
 use std::env;
+use std::mem;
 
 pub fn fetch() -> impl Future<Item=(), Error=()> {
     Client::new()
