@@ -1,9 +1,12 @@
 
 use futures::{Future, Stream};
-use std::io::{self, Cursor};
 use reqwest::r#async::{Client, Decoder};
 use std::env;
 use std::mem;
+
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
 
 pub fn fetch() -> impl Future<Item=(), Error=()> {
     Client::new()
@@ -24,10 +27,20 @@ pub fn fetch() -> impl Future<Item=(), Error=()> {
         })
         .map_err(|err| println!("request error: {}", err))
         .map(|body| {
-            let mut body = Cursor::new(body);
-            let _ = io::copy(&mut body, &mut io::stdout())
-                .map_err(|err| {
-                    println!("stdout error: {}", err);
-                });
+            let v = body.to_vec();
+            write_file(String::from_utf8_lossy(&v).to_string());
         })
+}
+
+pub fn write_file(content: String) {
+    let path = Path::new("coin_charts.json");
+    let mut file = match File::create(&path) {
+        Err(e) => panic!("{}", e),
+        Ok(file) => file,
+    };
+
+    match file.write_all(content.as_bytes()) {
+        Err(e) => panic!("{}", e),
+        Ok(_) => println!("succesfully wrote file"),
+    }
 }
