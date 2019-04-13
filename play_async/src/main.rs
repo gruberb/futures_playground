@@ -1,4 +1,3 @@
-
 use futures::{Future, Stream};
 use reqwest::r#async::{Client, Decoder};
 use std::env;

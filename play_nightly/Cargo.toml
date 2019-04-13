@@ -1,7 +1,14 @@
 [package]
-name = "play_nightly"
+name = "play_async"
 version = "0.1.0"
 authors = ["Bastian Gruber <gruberbastian@me.com>"]
 edition = "2018"
 
 [dependencies]
+reqwest = "0.9.14"
+dotenv = "0.13.0"
+tokio = {version = "0.1", features = ["async-await-preview"]}
+
+[dependencies.futures-preview]
+features = ["compat"]
+version = "0.3.0-alpha.13"
