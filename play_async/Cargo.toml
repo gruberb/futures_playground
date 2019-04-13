@@ -1,0 +1,11 @@
+[package]
+name = "play_async"
+version = "0.1.0"
+authors = ["Bastian Gruber <gruberbastian@me.com>"]
+edition = "2018"
+
+[dependencies]
+reqwest = "0.9.14"
+dotenv = "0.13.0"
+tokio = "0.1.18"
+futures = "0.1.21"

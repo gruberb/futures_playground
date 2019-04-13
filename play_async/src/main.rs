@@ -8,7 +8,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
-pub fn fetch() -> impl Future<Item=(), Error=()> {
+fn get_coin_price() -> impl Future<Item=(), Error=()> {
     Client::new()
         .get("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest")
         .header("X-CMC_PRO_API_KEY", env::var("CMC_PRO_API_KEY").unwrap())
@@ -32,7 +32,7 @@ pub fn fetch() -> impl Future<Item=(), Error=()> {
         })
 }
 
-pub fn write_file(content: String) {
+fn write_file(content: String) {
     let path = Path::new("coin_charts.json");
     let mut file = match File::create(&path) {
         Err(e) => panic!("{}", e),
@@ -43,4 +43,12 @@ pub fn write_file(content: String) {
         Err(e) => panic!("{}", e),
         Ok(_) => println!("succesfully wrote file"),
     }
+}
+
+fn main() {
+    dotenv::dotenv().expect("Failed to read .env file");
+    
+    println!("Before");
+    tokio::run(get_coin_price());
+    println!("After");
 }
